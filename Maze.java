@@ -19,31 +19,54 @@ import java.io.*;
       3. When the file is not found OR the file is invalid (not exactly 1 E and 1 S) then:
          throw a FileNotFoundException or IllegalStateException
     */
-    public Maze(String filename) throws FileNotFoundException{
+    public Maze(String filename){
+      try{
       animate = false;
         File text = new File(filename);
         Scanner inf = new Scanner(text);
+        String finals = "";
         String line = "";
         int counter = 0;
         while(inf.hasNextLine()){
           line = inf.nextLine();
           counter++;
+          finals+=line;
         }
         int countS = 0;
         int countE = 0;
-        for (int i = 0; i <line.length(); i++){
-          if (line.charAt(i) == 'E'){
+        for (int i = 0; i <finals.length(); i++){
+          if (finals.charAt(i) == 'E'){
             countE++;
           }
-          if (line.charAt(i)== 'S'){
+          if (finals.charAt(i)== 'S'){
             countS++;
           }
         }
         if (countS != 1 || countE != 1){
           throw new IllegalStateException();
         }
-        for (int r =0; r < )
+      int x = 0;
+	maze = new char[counter][line.length()*counter];
+        for (int r =0; r < counter; r++){
+          for (int c =0; c < line.length(); c++){
+            maze[r][c] = finals.charAt(x);//SOMETHING;
+            x++;
+          }
+        }
+      }
+      catch (FileNotFoundException e){};
     }
+
+      public String toString(){
+        String str ="";
+        for (int r = 0; r < maze.length; r++){
+          for (int c = 0; c < maze[0].length; c++){
+            str+= maze[r][c];
+          }
+          str+="\n";
+        }
+        return str;
+      }
 
     private void wait(int millis){
          try {
@@ -102,5 +125,8 @@ import java.io.*;
         //COMPLETE SOLVE
         return -1; //so it compiles
     }
-
+public static void main(String[] args) {
+  Maze test = new Maze("Maze1.txt");
+  System.out.println(test);
+}
 }
