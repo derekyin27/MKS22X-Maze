@@ -91,13 +91,23 @@ import java.io.*;
       Since the constructor exits when the file is not found or is missing an E or S, we can assume it exists.
     */
     public int solve(){
+      int row = 0;
+      int col = 0;
+      for (int r = 0; r < maze.length; r++){
+        for (int c = 0; c < maze[0].length; c++){
+          if (maze[r][c]=='S'){
+            row =r;
+            col=c;
+          }
+        }
+      }
             //find the location of the S.
-
+maze[row][col] = '@';
             //erase the S
-
+return solve(row, col);
             //and start solving at the location of the s.
             //return solve(???,???);
-            return 1;
+
     }
 
     /*
