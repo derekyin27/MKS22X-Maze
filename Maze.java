@@ -96,13 +96,13 @@ import java.io.*;
       for (int r = 0; r < maze.length; r++){
         for (int c = 0; c < maze[0].length; c++){
           if (maze[r][c]=='S'){
-            row =r;
-            col=c;
+            row = r;
+            col= c;
           }
         }
       }
             //find the location of the S.
-maze[row][col] = '@';
+//maze[row][col] = '@';
             //erase the S
 return solve(row, col);
             //and start solving at the location of the s.
@@ -124,19 +124,41 @@ return solve(row, col);
         All visited spots that are part of the solution are changed to '@'
     */
     private int solve(int row, int col){ //you can add more parameters since this is private
-
+int[] rowMove = new int[] {1, -1, 0, 0};
+int[] colMove = new int[] {0, 0, 1, -1};
+int moves = 0;
         //automatic animation! You are welcome.
         if(animate){
             clearTerminal();
             System.out.println(this);
             wait(20);
         }
+        for (int i = 0; i < rowMove.length; i++){
+          char next = maze[row+rowMove[i]][col+colMove[i]];
+          if (next == ' '){
+            maze[row][col] = '@';
+            moves++;
+            return solve(row+rowMove[i], col+colMove[i]);
+          }
+          else{
+            if (i ==3){
+              maze[row][col]= '.';
+              moves--;
+              for (int n = 3; n > -1; n--){
+                char moves2 = maze[row+rowMove[n]][col+colMove[n]];
+                if (moves2 == '@'){
+                  return solve(row +rowMove[n], col + colMove[n]);
+                }
+              }
+            }
+          }
+        }
+        return -1;
+      }
 
-        //COMPLETE SOLVE
-        return -1; //so it compiles
-    }
 public static void main(String[] args) {
   Maze test = new Maze("Maze1.txt");
+  System.out.println(test.solve());
   System.out.println(test);
 }
 }
