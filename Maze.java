@@ -102,7 +102,7 @@ import java.io.*;
         }
       }
             //find the location of the S.
-//maze[row][col] = '@';
+            maze[row][col] = '@';
             //erase the S
 return solve(row, col);
             //and start solving at the location of the s.
@@ -131,30 +131,60 @@ int moves = 0;
         if(animate){
             clearTerminal();
             System.out.println(this);
-            wait(20);
+            wait(100);
         }
-        for (int i = 0; i < rowMove.length; i++){
-          char next = maze[row+rowMove[i]][col+colMove[i]];
-          if (next == ' '){
-            maze[row][col] = '@';
-            moves++;
-            return solve(row+rowMove[i], col+colMove[i]);
-          }
-          else{
-            if (i ==3){
-              maze[row][col]= '.';
-              moves--;
-              for (int n = 3; n > -1; n--){
-                char moves2 = maze[row+rowMove[n]][col+colMove[n]];
-                if (moves2 == '@'){
-                  return solve(row +rowMove[n], col + colMove[n]);
-                }
+        if (maze[row][col]=='E'){
+          for (int r = 0; r < maze.length; r++){
+            for (int c = 0; c < maze[0].length; c++){
+              if (maze[r][c] == '@'){
+                moves++;
               }
             }
           }
         }
+        for (int i = 0; i < rowMove.length; i++){
+          char next = maze[row+rowMove[i]][col+colMove[i]];
+          if (next == ' '){
+            maze[row+rowMove[i]][col+colMove[i]] = '@';
+            moves++;
+            return solve(row+rowMove[i], col+colMove[i]);
+          }
+          if (next == 'E'){
+            for (int r = 0; r < maze.length; r++){
+              for (int c = 0; c < maze[0].length; c++){
+                if (maze[r][c] == '@'){
+                  moves++;
+                }
+              }
+            }
+            return moves;
+          }
+          else{
+            if (i >= 3){
+              for (int x = 0; x < rowMove.length; x++){
+                char prev = maze[row+rowMove[x]][col+colMove[x]];
+                if (prev == '@'){
+                  maze[row][col]='.';
+                  moves--;
+                  return solve(row+rowMove[x], col+colMove[x]);
+                }
+                if (prev == 'E'){
+                  for (int r = 0; r < maze.length; r++){
+                    for (int c = 0; c < maze[0].length; c++){
+                      if (maze[r][c] == '@'){
+                        moves++;
+                      }
+                    }
+                  }
+                  return moves;
+                }
+          }
+        }
+        }
+      }
         return -1;
       }
+
 
 public static void main(String[] args) {
   Maze test = new Maze("Maze1.txt");
